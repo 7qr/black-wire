@@ -1,0 +1,21 @@
+[package]
+name = "black-wire-server"
+version = "0.1.0"
+edition = "2024"
+
+[dependencies]
+dotenvy = "0.15.7"
+openssl = "0.10.71"
+postgres = "0.19.10"
+postgres-openssl = "0.5.1"
+serde = "1.0.218"
+tokio = "1.44.0"
+tokio-postgres = "0.7.13"
+
+[dependencies.rocket]
+version = "0.5.1"
+features = ["json"]
+
+[dependencies.rocket_db_pools]
+version = "0.2.0"
+features = ["deadpool-postgres"]
